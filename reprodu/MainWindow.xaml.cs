@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Net;
+using System.IO;
 
 namespace reprodu
 {
@@ -24,6 +26,7 @@ namespace reprodu
     {
 
         bool isDragging;
+
 
         public MainWindow()
         {
@@ -107,5 +110,33 @@ namespace reprodu
         {
 
         }
+
+
+
+        private void BtnDescargar_Click(object sender, RoutedEventArgs e)
+        {
+
+            Uri _videoUri = await GetYoutubeUri("1uP7AMW9bXg");
+
+            if (_videoUri != null)
+            {
+                using (WebClient wc = new WebClient())
+                {
+                    //descargamos el vídeo a la carpeta donde se ejecuta la app como "video.mp4"
+                    wc.DownloadFile(_videoUri, System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "video.mp4"));
+                }
+                // Ponemos como fuente el vídeo recién descargado
+                mePlayer.Source = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "video.mp4"));
+            }               
+
+        
+        }
+
+
     }
-}
+        
+
+
+
+ }
+
