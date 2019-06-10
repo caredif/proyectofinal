@@ -5,24 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:reprodu"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    
-    <Grid Margin=" 10">
-        
+        Title="MainWindow" Height="536" Width="1022" Background="#FF938D8D" BorderBrush="#FFAA6060" Foreground="#FFA66868" OpacityMask="WhiteSmoke">
+
+    <Grid Margin="10" >
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <MediaElement Source="http://hubblesource.stsci.edu/sources/video/clips/details/images/hst_1.mpg" LoadedBehavior="Manual" Name="mePlayer" />
-        <StackPanel Grid.Row="1">
-            <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" />
-            <WrapPanel HorizontalAlignment="Center">
-                <Button Name="btnPlay" Click="btnPlay_Click">Play</Button>
-                <Button Name="btnPause" Margin="5,0" Click="btnPause_Click">Pause</Button>
-                <Button Name="btnStop" Click="btnStop_Click">Stop</Button>
-            </WrapPanel>
-        </StackPanel>
+
+
+        <!--PROPIEDADES DE COLOR Y ALINIEACION RESPONSIVA PEDIR LINK DEL VIDEO-->
+        <Grid x:Name="gridAskUrl" Grid.Row="0" Margin="0,6,0,148" >
+            <Grid.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FF0E0D0D" Offset="0"/>
+                    <GradientStop Color="#FF727171" Offset="1"/>
+                </RadialGradientBrush>
+            </Grid.Background>
+
+            <!-- Stack panel Buscar Video en GRID ROW 0 PEDIR  VIDEO-->
+
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal" Margin="0,0,0,-20">
+
+                <Label x:Name="videoLabel" Content="Pegue el Link del video:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top" FontFamily="Lucida Console" FontSize="14" Foreground="#FF36DACB" FontWeight="Bold"/>
+                <TextBox HorizontalAlignment="Left" Margin="25,33,0,0" TextWrapping="Wrap" Width="421" Height="23" VerticalAlignment="Top" />
+                <Button Margin="50,36,0,0" FontFamily="Lucida Console" FontWeight="Bold" Content="Buscar" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+            </StackPanel>
+        </Grid>
+
+        <!--*********************   FIN GRID ROW 0 ***************************************************************************-->
+
+        <!--        Grid para Reproductor y lista -->
         
-        
+        <Grid Background="#FF2133A6" Grid.RowSpan="2" Margin="0,110,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+        </Grid>
+
     </Grid>
 </Window>
