@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Net;
-using System.IO;
 using YoutubeExplode;
 using YoutubeExplode.Models.MediaStreams;
+using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
 namespace reprodu
@@ -27,75 +16,86 @@ namespace reprodu
     public partial class MainWindow : Window
 
     {
-
+        DispatcherTimer timer;
         bool isDragging;
-
+        private MediaPlayer mediaPlayer = new MediaPlayer();
 
         public MainWindow()
         {
             InitializeComponent();
 
             //controles del temporizador media
-            DispatcherTimer timer = new DispatcherTimer();
+            timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += timer_Tick;
+            timer.Tick += new EventHandler(timer_Tick);
+            //timer.Tick += timer_Tick;
             timer.Start();
 
             isDragging = false;
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            /*OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                mediaPlayer.Open(new Uri(openFileDialog.FileName));
+                mediaPlayer.Open(new Uri(openFileDialog.FileName));*/
         }
-
-
-        private MediaPlayer mediaPlayer = new MediaPlayer();
-
-        public MediaPlayerAudioControlSample()
-        {
-            InitializeComponent();
-
-           
-
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += timer_Tick;
-            timer.Start();
-        }
-
-
 
 
         void timer_Tick(object sender, EventArgs e)  //tiempo que esta reproduciendo
         {
-            if (mePlayer.Source != null)
-            {
-                if (mePlayer.NaturalDuration.HasTimeSpan)
-                    lblStatus.Content = String.Format("{0} / {1}", mePlayer.Position.ToString(@"mm\:ss"), mePlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
 
-                if (!isDragging) // Si NO hay operación de arrastre en el sliderTimeLine, su posición se actualiza cada segundo.
+            /*
+            if (mediaPlayer.Source != null)
+                lblStatus.Content = String.Format("{0} / {1}", mediaPlayer.Position.ToString(@"mm\:ss"), mediaPlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+            else
+                lblStatus.Content = "No file selected...";*/
+
+            if (mediaPlayer.Source != null)
+            {
+                if (mediaPlayer.NaturalDuration.HasTimeSpan)
                 {
-                    SliderTimeLine.Value = mePlayer.Position.TotalSeconds;
+                    lblStatus.Content = string.Format("{0} / {1}", mediaPlayer.Position.ToString(@"mm\:ss"), mediaPlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+                    TimeSpan ts = mediaPlayer.NaturalDuration.TimeSpan;
+                    SliderTimeLine.Maximum = ts.TotalSeconds;
+                    SliderTimeLine.SmallChange = 1;
                 }
+                    
             }
             else
                 lblStatus.Content = "No file selected...";
+
+            if (!isDragging) // Si NO hay operación de arrastre en el sliderTimeLine, su posición se actualiza cada segundo.
+            {
+                SliderTimeLine.Value = mediaPlayer.Position.TotalSeconds;
+            }
+
         }
+
+
+
+        private void MEmusicPlayer_MediaEnded(object sender, RoutedEventArgs e) // Se dispara cuando se termina de reproducir una canción pero no cuando se hace click en Stop
+        {
+            SliderTimeLine.Value = 0;
+            //MoveToNextTrack();
+        }
+
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            mePlayer.Play();
+            SliderTimeLine.Value = 0;
+            mediaPlayer.Play();
         }
+
+
+
 
         private void btnPause_Click(object sender, RoutedEventArgs e)
         {
-            mePlayer.Pause();
+            mediaPlayer.Pause();
         }
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
-            mePlayer.Stop();
+            mediaPlayer.Stop();
         }
 
         private void Btnsiguiente_Click(object sender, RoutedEventArgs e)
@@ -106,12 +106,12 @@ namespace reprodu
         private void SliderTimeLine_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) //no usado
         {
             // isDragging = false;
-            //MEmusicPlayer.Position =
+            //mediaPlayer.Position =
             //    TimeSpan.FromSeconds(SliderTimeLine.Value);// La posición del MediaElement se actualiza para que coincida con el progreso del sliderTimeLine.
 
             //int sliderValue = (int)SliderTimeLine.Value;
             //TimeSpan ts = new TimeSpan(0, 0, 0, 0, sliderValue);
-            //MEmusicPlayer.Position = ts;
+            //mediaPlayer.Position = ts;
         }
 
         private void SliderTimeLine_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
@@ -122,14 +122,12 @@ namespace reprodu
         private void SliderTimeLine_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             isDragging = false;
-            mePlayer.Position =
-                TimeSpan.FromSeconds(SliderTimeLine.Value);// La posición del MediaElement se actualiza para que coincida con el progreso del sliderTimeLine.
+            mediaPlayer.Position = TimeSpan.FromSeconds(SliderTimeLine.Value);// La posición del MediaElement se actualiza para que coincida con el progreso del sliderTimeLine.
         }
 
         private void SliderTimeLine_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            mePlayer.Position =
-                TimeSpan.FromSeconds(SliderTimeLine.Value);
+            mediaPlayer.Position = TimeSpan.FromSeconds(SliderTimeLine.Value);
         }
 
         private void BtnAtras_Click(object sender, RoutedEventArgs e)
@@ -137,10 +135,10 @@ namespace reprodu
 
         }
 
-
+        
         private static string NormalizeVideoId(string input)
         {
-            string videoId = string.Empty;
+            string videoId;     // = string.Empty;
             return YoutubeClient.TryParseVideoId(input, out videoId)
                 ? videoId
                 : input;
@@ -149,22 +147,6 @@ namespace reprodu
 
         private async void BtnDescargar_Click(object sender, RoutedEventArgs e)
         {
-
-            /*  Uri _videoUri = await GetYoutubeUri("1uP7AMW9bXg");
-
-              if (_videoUri != null)
-              {
-                  using (WebClient wc = new WebClient())
-                  {
-                      //descargamos el vídeo a la carpeta donde se ejecuta la app como "video.mp4"
-                      wc.DownloadFile(_videoUri, System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "video.mp4"));
-                  }
-                  // Ponemos como fuente el vídeo recién descargado
-                  mePlayer.Source = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "video.mp4"));
-              }               
-              */
-
-            
 
             //nuevo cliente de Youtube
             var client = new YoutubeClient();
@@ -181,46 +163,69 @@ namespace reprodu
             var fileName = $"{video.Title}.{fileExtension}";
 
             //TODO: Reemplazar los caractéres ilegales del nombre
-            //fileName = RemoveIllegalFileNameChars(fileName);
+            fileName = CleanInput(fileName);
+
 
             //Activa el timer para que el proceso funcione de forma asincrona
             //tmrVideo.Enabled = true;
-            
+
 
             // mensajes indicando que el video se está descargando
             //txtMensaje.Text = "Descargando el video ... ";
+            MessageBox.Show("Descargando... porfavor espere...");
+            pbStatus.Visibility = Visibility.Visible;
+            txtdescargando.Visibility = Visibility.Visible;
 
             //TODO: se pude usar una barra de progreso para ver el avance
-            //using (var progress = new ProgressBar())
+            //using (ProgressBar progress = new ProgressBar())
 
             //Empieza la descarga
             await client.DownloadMediaStreamAsync(streamInfo, fileName);
+       
 
             //Ya descargado se inicia la conversión a MP3
             var Convert = new NReco.VideoConverter.FFMpegConverter();
             //Especificar la carpeta donde se van a guardar los archivos, recordar la \ del final
             
-            String SaveMP3File = @"C:\DescargasPF" + fileName.Replace(".mp4", ".mp3");
+            String SaveMP3File = @"C:\DescargasPF\" + fileName.Replace(".mp4", ".mp3");
             //Guarda el archivo convertido en la ubicación indicada
             Convert.ConvertMedia(fileName, SaveMP3File, "mp3");
 
+
             //Si el checkbox de solo audio está chequeado, borrar el mp4 despues de la conversión
-            /*if (ckbAudio.Checked)
-                File.Delete(fileName);*/
+            //if (ckbAudio.Checked)
+             //   File.Delete(fileName);
 
 
             //Indicar que se terminó la conversion
-            txtMensaje.Text = "Archivo Convertido en MP3";
-            //tmrVideo.Enabled = false;
-            //txtMensaje.BackColor = Color.White;
+            MessageBox.Show("Archivo descargado y convertido");
+            pbStatus.Visibility = Visibility.Hidden;
+            txtdescargando.Visibility = Visibility.Hidden;
 
             //TODO: Cargar el MP3 al reproductor o a la lista de reproducción
-            //CargarMP3s();
-            //Se puede incluir un checkbox para indicar que de una vez se reproduzca el MP3
-            //if (ckbAutoPlay.Checked) 
-            //  ReproducirMP3(SaveMP3File);
+            mediaPlayer.Open(new Uri(SaveMP3File));
+
 
         }
+
+        static string CleanInput(string strIn)
+        {
+            // Replace invalid characters with empty strings.
+            try
+            {
+                return Regex.Replace(strIn, @"[^\w\.@-]", "",
+                                     RegexOptions.None, TimeSpan.FromSeconds(1.5));
+            }
+            // If we timeout when replacing invalid characters, 
+            // we should return Empty.
+            catch (RegexMatchTimeoutException)
+            {
+                return String.Empty;
+            }
+        }
+
+
+
 
 
     }

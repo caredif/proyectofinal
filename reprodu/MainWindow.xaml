@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:reprodu"
         mc:Ignorable="d"
-        Title="MainWindow" Height="547" Width="1031" Background="#FF938D8D" BorderBrush="#FFAA6060" Foreground="#FFA66868" OpacityMask="WhiteSmoke">
+        Title="MainWindow" Height="567" Width="1031" Background="#FF938D8D" BorderBrush="#FFAA6060" Foreground="#FFA66868" OpacityMask="WhiteSmoke">
 
     <Window.Resources>
 
@@ -74,20 +74,22 @@
 
             <Grid Grid.Column="0" Background="#FF302A2A">
 
-                <ProgressBar Minimum="0" Maximum="100" Value="75" Height="14" Name="pbStatus" VerticalAlignment="Top" Margin="0,372,0,0" />
+                <ProgressBar Minimum="0" Maximum="100" Value="75" IsIndeterminate="True" Height="14" Name="pbStatus" VerticalAlignment="Top" Margin="0,382,0,0" Visibility="Hidden" />
+                <TextBlock x:Name="txtdescargando" Text="DESCARGANDO ...." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="211,380,179,10" Foreground="Black" Width="112" FontWeight="Bold" FontFamily="Arial" TextDecorations="{x:Null}" Visibility="Hidden" />
 
 
-                <!--        ****************** StackPanel reproductor de video      ********************-->
+
+                <!--        ****************** StackPanel Imagen reproductor     ********************-->
                 <StackPanel Margin="10">
-                    
+
                     <!--
                     <MediaElement Source="http://hubblesource.stsci.edu/sources/video/clips/details/images/hst_1.mpg" LoadedBehavior="Manual" Name="mePlayer" Height="240"/>
                     -->
-                    
-                    <Image Height="223" />
-                    
-                    
-                    <StackPanel Panel.ZIndex="1" Height="200" >
+
+                    <Image Height="241" Source="Recursos/Portadas/Imagenrep.png" />
+
+
+                    <StackPanel Panel.ZIndex="1" Height="118" >
                         <Label Name="lblStatus" Content="..." HorizontalContentAlignment="Center" Margin="5" Foreground="#FFF9F6F6" FontFamily="Lucida Console" FontSize="15" FontWeight="Bold" FontStyle="Italic" />
                         <Slider Height="23" Margin="65,0,57,25" 
                                 x:Name="SliderTimeLine" VerticalAlignment="Bottom"

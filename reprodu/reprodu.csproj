@@ -127,6 +127,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Recursos\Portadas\Imagenrep.png" />
     <Content Include="YouTubeDownload.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
