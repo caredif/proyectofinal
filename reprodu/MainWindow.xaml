@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:reprodu"
         mc:Ignorable="d"
-        Title="MainWindow" Height="567" Width="1031" Background="#FF938D8D" BorderBrush="#FFAA6060" Foreground="#FFA66868" OpacityMask="WhiteSmoke">
+        Title="MainWindow" Height="637" Width="1107" Background="#FF938D8D" BorderBrush="#FFAA6060" Foreground="#FFA66868" OpacityMask="WhiteSmoke">
 
     <Window.Resources>
 
@@ -64,19 +64,13 @@
 
         <Grid Background="#FF2133A6" Grid.RowSpan="2" Margin="0,110,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="502*" />
-                <ColumnDefinition Width="335*" />
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition Width="156*"/>
+                <ColumnDefinition Width="540*" />
+                <ColumnDefinition Width="539*" />
             </Grid.ColumnDefinitions>
 
             <!--        ******              Grid columna Izquierda Reproductor      **********-->
 
             <Grid Grid.Column="0" Background="#FF302A2A">
-
-                <ProgressBar Minimum="0" Maximum="100" Value="75" IsIndeterminate="True" Height="14" Name="pbStatus" VerticalAlignment="Top" Margin="0,382,0,0" Visibility="Hidden" />
-                <TextBlock x:Name="txtdescargando" Text="DESCARGANDO ...." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="211,380,179,10" Foreground="Black" Width="112" FontWeight="Bold" FontFamily="Arial" TextDecorations="{x:Null}" Visibility="Hidden" />
-
 
 
                 <!--        ****************** StackPanel Imagen reproductor     ********************-->
@@ -105,9 +99,42 @@
                             <Button x:Name="btnsiguiente" Click="Btnsiguiente_Click" Width="30" Height="30" Margin="10,0,0,0" FontFamily="Arial Black" FontSize="14" Background="{x:Null}" Foreground="#FF88EE0E" Content="►►"/>
                         </WrapPanel>
                     </StackPanel>
+
+
                 </StackPanel>
+                <TextBlock x:Name="txtdescargando" Text="DESCARGANDO ...." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="184,4,0,0" Foreground="Black" Width="112" FontWeight="Bold" FontFamily="Arial" TextDecorations="{x:Null}" Panel.ZIndex="2" Visibility="Hidden" />
+                <ProgressBar Minimum="0" Maximum="100" Value="75" IsIndeterminate="True" Height="22" Name="pbStatus" VerticalAlignment="Top" Margin="0" Panel.ZIndex="1" Visibility="Hidden" />
 
             </Grid>
+
+
+            <!--    **************************      LADO DERECHO DESPLEGAR LETRA        ************************                 -->
+
+            <Grid Grid.Column="1" Background="#FF302A2A" >
+                <ListBox x:Name="listBoxBiblio" HorizontalAlignment="Left" Height="109" Margin="10,35,0,0" VerticalAlignment="Top" Width="519" SelectionMode="Multiple" Foreground="White" FontWeight="Bold" >
+                    <ListBox.Background>
+                        <SolidColorBrush Color="Black"/>
+                    </ListBox.Background>
+
+
+
+
+                </ListBox>
+                <Label x:Name="lblBiblioteca" Content="Biblioteca de canciones" HorizontalAlignment="Left" Margin="207,10,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontFamily="Arial"/>
+                <Button x:Name="btnActualizar" Content="Actualizar" HorizontalAlignment="Left" Margin="226,149,0,0" VerticalAlignment="Top" Width="75" Background="#FF9CB8E2" Click="BtnActualizar_Click"/>
+                <Button x:Name="btnBorrar" Content="Borrar" HorizontalAlignment="Left" Margin="427,149,0,0" VerticalAlignment="Top" Width="75" Background="#FFD8614E"/>
+                <Button Content="Crear Playlist" Click="Crear_Click" HorizontalAlignment="Left" Margin="40,149,0,0" VerticalAlignment="Top" Width="75" Background="#FF67C146"/>
+                <ComboBox HorizontalAlignment="Left" Margin="115,221,0,0" VerticalAlignment="Top" Width="239" Background="Black" BorderBrush="#FFB8B8B8"/>
+                <Label Content="Lista::" HorizontalAlignment="Left" Margin="10,221,0,0" VerticalAlignment="Top" FontFamily="Lucida Console" FontSize="18" Foreground="#FFF5F3F3"/>
+                <Label Content="Ingrese Nombre Nueva Playlist:" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Lucida Console"/>
+                <TextBox HorizontalAlignment="Left" Height="23" Margin="242,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>
+                <Button Content="Guardar" HorizontalAlignment="Left" Margin="446,188,0,0" VerticalAlignment="Top" Width="75" Background="#FF1C7C1C"/>
+                <ListBox HorizontalAlignment="Left" Height="111" Margin="10,254,0,0" VerticalAlignment="Top" Width="519" Background="#FF403C3C" Foreground="#FF0C37F9"/>
+
+
+            </Grid>
+
+
         </Grid>
 
 

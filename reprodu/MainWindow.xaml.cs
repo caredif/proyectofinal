@@ -7,6 +7,9 @@ using YoutubeExplode;
 using YoutubeExplode.Models.MediaStreams;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
+using Newtonsoft.Json;
+using System.IO;
+using System.Collections.Generic;
 
 namespace reprodu
 {
@@ -19,6 +22,7 @@ namespace reprodu
         DispatcherTimer timer;
         bool isDragging;
         private MediaPlayer mediaPlayer = new MediaPlayer();
+        private object nombre;
 
         public MainWindow()
         {
@@ -33,10 +37,12 @@ namespace reprodu
 
             isDragging = false;
 
-            /*OpenFileDialog openFileDialog = new OpenFileDialog();
+            /*
+            OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                mediaPlayer.Open(new Uri(openFileDialog.FileName));*/
+                mediaPlayer.Open(new Uri(openFileDialog.FileName));
+            */
         }
 
 
@@ -205,6 +211,16 @@ namespace reprodu
             //TODO: Cargar el MP3 al reproductor o a la lista de reproducción
             mediaPlayer.Open(new Uri(SaveMP3File));
 
+            Cancioneslist CancionesJson = new Cancioneslist();
+            CancionesJson.Nombre = fileName;
+            CancionesJson.Ubicacion = SaveMP3File;
+
+            string salida = JsonConvert.SerializeObject(CancionesJson);
+            FileStream stream = new FileStream("Biblioteca.Json", FileMode.Append, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(stream);
+            writer.WriteLine(salida);
+            writer.Close();
+            MessageBox.Show("Ingresado Exitosamente!!");
 
         }
 
@@ -213,7 +229,7 @@ namespace reprodu
             // Replace invalid characters with empty strings.
             try
             {
-                return Regex.Replace(strIn, @"[^\w\.@-]", "",
+                return Regex.Replace(strIn, @"[^\w\.@-]", " ",
                                      RegexOptions.None, TimeSpan.FromSeconds(1.5));
             }
             // If we timeout when replacing invalid characters, 
@@ -224,10 +240,29 @@ namespace reprodu
             }
         }
 
+        private void BtnActualizar_Click(object sender, RoutedEventArgs e)
+        {
+            List<Cancioneslist> listacanciones = new List<Cancioneslist>();
 
+            FileStream stream = new FileStream("Biblioteca.json", FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(stream);
+            while (reader.Peek() > -1)
+            {
+                string lectura = reader.ReadLine();
+                Cancioneslist libroLeido = JsonConvert.DeserializeObject<Cancioneslist>(lectura);
+                listacanciones.Add(libroLeido);
+            }
+            reader.Close();
 
+            listBoxBiblio.ItemsSource = listacanciones;
+            listBoxBiblio.DisplayMemberPath = "Nombre";
+            
+        }
 
+        private void Crear_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
     }
         
 
