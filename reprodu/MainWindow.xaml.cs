@@ -284,6 +284,7 @@ namespace reprodu
             var cancion = listBoxBiblio.SelectedItem.ToString();
             var cargar = CancionesPlaylist.Ubicacion;
 
+
             AsignacionlistaJson.Nombrelista = txtBoxNombrelist.Text;
             AsignacionlistaJson.Contentlist = cancion;
 
