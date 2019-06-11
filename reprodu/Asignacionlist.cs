@@ -10,6 +10,7 @@ namespace reprodu
     {
         string cancioneslist;
         string nombrelista;
+        
 
         public string Contentlist
         {

@@ -89,7 +89,7 @@
                                 x:Name="SliderTimeLine" VerticalAlignment="Bottom"
                                 Thumb.DragStarted="SliderTimeLine_DragStarted" Thumb.DragCompleted="SliderTimeLine_DragCompleted" IsMoveToPointEnabled="True"
                                 MouseLeftButtonUp="SliderTimeLine_MouseLeftButtonUp" Background="{x:Null}" Panel.ZIndex="2"/>
-                        <WrapPanel Margin="145,0,133,0">
+                        <WrapPanel Margin="102,0,57,0">
 
                             <Button x:Name="btnAtras" Click="BtnAtras_Click" Width="30" Height="30" Margin="10,0,0,0" FontFamily="Arial Black" FontSize="14" Background="{x:Null}" Foreground="#FF1CD809" Content="◄◄"/>
                             <Button x:Name="btnPause" Margin="5,0" Click="btnPause_Click" FontSize="20" FontFamily="Arial Black" Background="{x:Null}" Width="30" Foreground="#FFE7FBF6" Content="II"/>
@@ -97,6 +97,11 @@
 
                             <Button x:Name="btnStop" Click="btnStop_Click" Width="30" Height="30" Margin="10,0,0,0" FontSize="20" Background="{x:Null}" Foreground="#FFF11010" Content="■"/>
                             <Button x:Name="btnsiguiente" Click="Btnsiguiente_Click" Width="30" Height="30" Margin="10,0,0,0" FontFamily="Arial Black" FontSize="14" Background="{x:Null}" Foreground="#FF88EE0E" Content="►►"/>
+                            <Button Content="Cargar cancion" Width="97" Margin="30,0,0,0" Foreground="#FFF1F1F1" FontWeight="Bold" Click="Button_Click">
+                                <Button.Background>
+                                    <SolidColorBrush Color="Black" Opacity="0.75"/>
+                                </Button.Background>
+                            </Button>
                         </WrapPanel>
                     </StackPanel>
 
@@ -110,7 +115,7 @@
 
             <!--    **************************      LADO DERECHO DESPLEGAR LETRA        ************************                 -->
 
-            <Grid Grid.Column="1" Background="#FF302A2A" >
+            <Grid x:Name="nombrelist" Grid.Column="1" Background="#FF302A2A" >
                 <ListBox x:Name="listBoxBiblio" HorizontalAlignment="Left" Height="109" Margin="10,35,0,0" VerticalAlignment="Top" Width="519" SelectionMode="Multiple" Foreground="White" FontWeight="Bold" >
                     <ListBox.Background>
                         <SolidColorBrush Color="Black"/>
@@ -123,13 +128,13 @@
                 <Label x:Name="lblBiblioteca" Content="Biblioteca de canciones" HorizontalAlignment="Left" Margin="207,10,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontFamily="Arial"/>
                 <Button x:Name="btnActualizar" Content="Actualizar" HorizontalAlignment="Left" Margin="226,149,0,0" VerticalAlignment="Top" Width="75" Background="#FF9CB8E2" Click="BtnActualizar_Click"/>
                 <Button x:Name="btnBorrar" Content="Borrar" HorizontalAlignment="Left" Margin="427,149,0,0" VerticalAlignment="Top" Width="75" Background="#FFD8614E"/>
-                <Button Content="Crear Playlist" Click="Crear_Click" HorizontalAlignment="Left" Margin="40,149,0,0" VerticalAlignment="Top" Width="75" Background="#FF67C146"/>
-                <ComboBox HorizontalAlignment="Left" Margin="115,221,0,0" VerticalAlignment="Top" Width="239" Background="Black" BorderBrush="#FFB8B8B8"/>
+                <Button x:Name="btnCrear" Content="Crear Playlist" Click="Crear_Click" HorizontalAlignment="Left" Margin="40,149,0,0" VerticalAlignment="Top" Width="75" Background="#FF67C146"/>
                 <Label Content="Lista::" HorizontalAlignment="Left" Margin="10,221,0,0" VerticalAlignment="Top" FontFamily="Lucida Console" FontSize="18" Foreground="#FFF5F3F3"/>
-                <Label Content="Ingrese Nombre Nueva Playlist:" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Lucida Console"/>
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="242,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>
-                <Button Content="Guardar" HorizontalAlignment="Left" Margin="446,188,0,0" VerticalAlignment="Top" Width="75" Background="#FF1C7C1C"/>
-                <ListBox HorizontalAlignment="Left" Height="111" Margin="10,254,0,0" VerticalAlignment="Top" Width="519" Background="#FF403C3C" Foreground="#FF0C37F9"/>
+                <Label x:Name="lbIngrese" Content="Ingrese Nombre Nueva Playlist:" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Lucida Console"/>
+                <TextBox x:Name="txtBoxNombrelist" HorizontalAlignment="Left" Height="23" Margin="242,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>
+                <Button x:Name="btnGlist" Content="Guardar" HorizontalAlignment="Left" Margin="446,188,0,0" VerticalAlignment="Top" Width="75" Background="#FF1C7C1C" Click="BtnGlist_Click"/>
+                <ListBox x:Name="liBoxList" HorizontalAlignment="Left" Height="111" Margin="10,254,0,0" VerticalAlignment="Top" Width="519" Background="#FF403C3C" Foreground="#FF0C37F9"/>
+                <TextBox x:Name="nombretxtlist" HorizontalAlignment="Left" Height="19" Margin="101,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229"/>
 
 
             </Grid>

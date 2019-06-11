@@ -106,6 +106,16 @@ namespace reprodu
 
         private void Btnsiguiente_Click(object sender, RoutedEventArgs e)
         {
+            int a=0, b=0;
+
+
+
+            var cancion = new Cancioneslist();
+
+            string ubicacion = cancion.Ubicacion;
+            listBoxBiblio.SelectedIndex = listBoxBiblio.SelectedIndex + 1;
+            //mediaPlayer.Open(new Uri(ubicacion));
+
 
         }
 
@@ -261,7 +271,62 @@ namespace reprodu
 
         private void Crear_Click(object sender, RoutedEventArgs e)
         {
+            lbIngrese.Visibility = Visibility.Visible;
+            txtBoxNombrelist.Visibility = Visibility.Visible;
+            btnGlist.Visibility = Visibility.Visible;
+        }
 
+        private void BtnGlist_Click(object sender, RoutedEventArgs e)
+        {
+
+            Cancioneslist CancionesPlaylist = new Cancioneslist();
+            Asignacionlist AsignacionlistaJson = new Asignacionlist();
+            var cancion = listBoxBiblio.SelectedItem.ToString();
+            var cargar = CancionesPlaylist.Ubicacion;
+
+            AsignacionlistaJson.Nombrelista = txtBoxNombrelist.Text;
+            AsignacionlistaJson.Contentlist = cancion;
+
+            nombretxtlist.Text = AsignacionlistaJson.Nombrelista;
+                
+            string salida = JsonConvert.SerializeObject(AsignacionlistaJson);
+            FileStream stream = new FileStream("Playlist.Json", FileMode.Append, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(stream);
+            writer.WriteLine(salida);
+            writer.Close();
+            MessageBox.Show("Ingresado Exitosamente!!");
+
+
+
+            List<Asignacionlist> listacanciones = new List<Asignacionlist>();
+
+            FileStream streamo = new FileStream("playlist.json", FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(streamo);
+            while (reader.Peek() > -1)
+            {
+                string lectura = reader.ReadLine();
+               Asignacionlist libroLeido = JsonConvert.DeserializeObject<Asignacionlist>(lectura);
+                listacanciones.Add(libroLeido);
+            }
+            reader.Close();
+
+            liBoxList.ItemsSource = listacanciones;
+            liBoxList.DisplayMemberPath = "Contentlist";
+            //mediaPlayer.Open(new Uri(cargar));
+
+            
+            //  Volver a ocultar datos creacion playlit                        
+            lbIngrese.Visibility = Visibility.Hidden;
+            txtBoxNombrelist.Visibility = Visibility.Hidden;
+            btnGlist.Visibility = Visibility.Hidden;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                mediaPlayer.Open(new Uri(openFileDialog.FileName));
         }
     }
         
